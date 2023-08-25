@@ -1,7 +1,7 @@
 package com.example.appgithubrepo;
 
-import com.example.appgithubrepo.githubclient.infrastructure.controller.GitHubController;
-import com.example.appgithubrepo.githubclient.infrastructure.controller.dto.RepoFromGithubDto;
+import com.example.appgithubrepo.domain.clientgithub.GitHubClient;
+import com.example.appgithubrepo.githubclient.domain.clientgithub.dto.RepoFromGithubDto;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -23,12 +23,12 @@ public class AppGitHubRepoApplication {
         SpringApplication.run(AppGitHubRepoApplication.class, args);
     }
 
-    GitHubController gitHubController;
+    GitHubClient gitHubClient;
 
     @EventListener(ApplicationStartedEvent.class)
     public void doSomethingAfterStartup() {
         try {
-            List<RepoFromGithubDto> przemekZacheja = gitHubController.getRepos("PrzemekZacheja", "application/json");
+            List<RepoFromGithubDto> przemekZacheja = gitHubClient.getRepos("PrzemekZacheja", "application/json");
             log.info(przemekZacheja);
         } catch (FeignException e) {
             log.error(e.getMessage());
