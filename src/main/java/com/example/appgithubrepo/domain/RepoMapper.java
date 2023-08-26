@@ -1,7 +1,7 @@
 package com.example.appgithubrepo.domain;
 
 import com.example.appgithubrepo.domain.clientgithub.dto.BranchGitHubDto;
-import com.example.appgithubrepo.domain.clientgithub.dto.OwnerGitHubDto;
+import com.example.appgithubrepo.domain.clientgithub.dto.Owner;
 import com.example.appgithubrepo.domain.clientgithub.dto.RepoFromGithubDto;
 import com.example.appgithubrepo.domain.model.Branch;
 import com.example.appgithubrepo.domain.model.Repo;
@@ -10,6 +10,7 @@ import com.example.appgithubrepo.infrastructure.controller.dto.BranchDto;
 import com.example.appgithubrepo.infrastructure.controller.dto.ReposResponseDto;
 import com.example.appgithubrepo.infrastructure.controller.dto.UserDto;
 
+import java.util.Collections;
 import java.util.List;
 
 public class RepoMapper {
@@ -36,12 +37,14 @@ public class RepoMapper {
 
     public static Repo mapFromReposResponseDtoToRepo(RepoFromGithubDto repoFromGithubDto) {
         String name = repoFromGithubDto.name();
-        User user = mapFromUserDtoToUser(repoFromGithubDto.ownerGitHubDto());
+        User user = mapFromUserDtoToUser(repoFromGithubDto.owner());
         List<Branch> branches = mapFromBranchDtosToBranches(repoFromGithubDto.branches());
         return new Repo(name, user, branches);
     }
 
     private static List<Branch> mapFromBranchDtosToBranches(List<BranchGitHubDto> branches) {
+        if (branches == null || branches.isEmpty())
+            return Collections.emptyList();
         return branches.stream()
                 .map(RepoMapper::mapFromBranchDtoToBranch)
                 .toList();
@@ -51,7 +54,10 @@ public class RepoMapper {
         return new Branch(branchGitHubDto.name(), branchGitHubDto.lastCommitSha());
     }
 
-    private static User mapFromUserDtoToUser(OwnerGitHubDto ownerGitHubDto) {
+    private static User mapFromUserDtoToUser(Owner ownerGitHubDto) {
+        if (ownerGitHubDto == null){
+            return new User("");
+        }
         return new User(ownerGitHubDto.login());
     }
 }

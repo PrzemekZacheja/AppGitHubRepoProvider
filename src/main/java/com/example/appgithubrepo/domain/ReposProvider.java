@@ -9,8 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -20,13 +20,22 @@ public class ReposProvider {
     private RepoRepository repoRepository;
     private GitHubConectors gitHubConectors;
 
-    public List<ReposResponseDto> getAllRepo(String userName) {
-        List<RepoFromGithubDto> repoFromGithubDtos = gitHubConectors.takeDataFromGitHub(userName);
+    public List<ReposResponseDto> getAllRepo(String userName, String header) {
+        List<RepoFromGithubDto> repoFromGithubDtos = gitHubConectors.takeReposFromGitHub(userName, header);
         List<Repo> repoList = repoFromGithubDtos.stream().map(RepoMapper::mapFromReposResponseDtoToRepo).toList();
-
+        saveRepoList(repoList);
         List<Repo> allRepo = repoRepository.listOfRepos(userName);
         List<ReposResponseDto> reposResponseDtoList = allRepo.stream().map(RepoMapper::mapFromRepoToReposResponseDto).toList();
         log.info("list of repos successfully returned from the database");
         return reposResponseDtoList;
+    }
+
+    private List<Repo> saveRepoList(List<Repo> repoList) {
+        if (!repoList.isEmpty()) {
+            repoRepository.saveAll(repoList);
+            log.info("list of repos successfully saved to the database");
+            return repoList;
+        }
+        return Collections.emptyList();
     }
 }
