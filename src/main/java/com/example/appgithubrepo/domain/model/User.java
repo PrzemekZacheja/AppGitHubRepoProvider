@@ -1,4 +1,4 @@
 package com.example.appgithubrepo.domain.model;
 
-public record Owner(String login) {
+public record User(String login) {
 }
