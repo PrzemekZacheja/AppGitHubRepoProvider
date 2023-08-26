@@ -13,6 +13,14 @@ public class RepoRepository {
     final Map<Integer, Repo> repoMap = new HashMap<>();
 
     public List<Repo> listOfRepos(String userName) {
-        return repoMap.values().stream().filter(repo -> repo.name().equals(userName)).toList();
+        return repoMap.values().stream().filter(repo -> repo.user().login().equals(userName)).toList();
+    }
+
+    public void saveAll(List<Repo> repoList) {
+        int id = repoList.size();
+        for (Repo repo : repoList) {
+            repoMap.put(id, repo);
+            id++;
+        }
     }
 }
