@@ -14,4 +14,9 @@ public interface GitHubClient {
     @GetMapping("users/{userName}/repos")
     List<RepoFromGithubDto> getRepos(@PathVariable String userName,
                                      @RequestHeader String accept);
+
+    @GetMapping("/{userName}/{repo}/branches")
+    List<String> getBranches(@PathVariable String userName,
+                             @PathVariable String repo);
+
 }
