@@ -1,4 +1,8 @@
 package com.example.appgithubrepo.domain.clientgithub.dto;
 
-public record RepoFromGithubDto(String name, OwnerDto ownerDto) {
+import com.example.appgithubrepo.infrastructure.controller.dto.BranchDto;
+
+import java.util.List;
+
+public record RepoFromGithubDto(String name, OwnerGitHubDto ownerGitHubDto, List<BranchGitHubDto> branches) {
 }
