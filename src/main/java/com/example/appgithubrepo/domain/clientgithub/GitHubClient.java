@@ -1,5 +1,6 @@
 package com.example.appgithubrepo.domain.clientgithub;
 
+import com.example.appgithubrepo.domain.clientgithub.dto.BranchDto;
 import com.example.appgithubrepo.domain.clientgithub.dto.RepoFromGithubDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,4 +15,9 @@ public interface GitHubClient {
     @GetMapping("users/{userName}/repos")
     List<RepoFromGithubDto> getRepos(@PathVariable String userName,
                                      @RequestHeader String accept);
+
+    @GetMapping("/repos/{userName}/{repo}/branches")
+    List<BranchDto> getBranches(@PathVariable String userName,
+                                @PathVariable String repo);
+
 }

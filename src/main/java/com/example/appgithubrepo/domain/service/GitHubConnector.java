@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class GitHubConectors {
+public class GitHubConnector {
 
     GitHubClient gitHubClient;
 
