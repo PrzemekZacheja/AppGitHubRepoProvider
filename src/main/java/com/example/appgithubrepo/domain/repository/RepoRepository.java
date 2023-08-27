@@ -1,6 +1,6 @@
 package com.example.appgithubrepo.domain.repository;
 
-import com.example.appgithubrepo.domain.model.Repo;
+import com.example.appgithubrepo.infrastructure.controller.dto.ReposResponseDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -10,17 +10,9 @@ import java.util.Map;
 @Repository
 public class RepoRepository {
 
-    final Map<Integer, Repo> repoMap = new HashMap<>();
+    final Map<String, List<ReposResponseDto>> repoMap = new HashMap<>();
 
-    public List<Repo> listOfRepos(String userName) {
-        return repoMap.values().stream().filter(repo -> repo.user().login().equals(userName)).toList();
-    }
-
-    public void saveAll(List<Repo> repoList) {
-        int id = repoList.size();
-        for (Repo repo : repoList) {
-            repoMap.put(id, repo);
-            id++;
-        }
+    public void saveAll(List<ReposResponseDto> repoList) {
+        repoMap.put(repoList.get(0).userResponseDto().login(), repoList);
     }
 }
