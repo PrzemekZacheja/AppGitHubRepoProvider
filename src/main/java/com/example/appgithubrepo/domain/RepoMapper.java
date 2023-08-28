@@ -33,12 +33,19 @@ public class RepoMapper {
 
     public static Repo mapFromRepoFromGitHubToRepo(RepoFromGithubDto repoFromGithubDto) {
         String name = repoFromGithubDto.name();
-        User user = mapFromUserDtoToUser(repoFromGithubDto.owner());
+        User user = mapFromOwnerDtoToUser(repoFromGithubDto.owner());
         if (repoFromGithubDto.branches() == null) {
             return new Repo(name, user, new ArrayList<>());
         }
         List<Branch> branches = repoFromGithubDto.branches().stream().map(RepoMapper::mapFromBranchDtoToBranch).toList();
         return new Repo(name, user, branches);
+    }
+
+    private static User mapFromOwnerDtoToUser(Owner ownerDtoGitHub) {
+        if (ownerDtoGitHub == null) {
+            return new User("");
+        }
+        return new User(ownerDtoGitHub.login());
     }
 
     public static Branch mapFromBranchDtoToBranch(BranchDto branchDto) {
@@ -51,13 +58,6 @@ public class RepoMapper {
 
     private static Commit mapFromCommitDtoToCommit(CommitDto commitDto) {
         return new Commit(commitDto.sha());
-    }
-
-    private static User mapFromUserDtoToUser(Owner ownerDtoGitHub) {
-        if (ownerDtoGitHub == null) {
-            return new User("");
-        }
-        return new User(ownerDtoGitHub.login());
     }
 
 }

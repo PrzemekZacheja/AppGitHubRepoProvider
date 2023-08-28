@@ -1,7 +1,7 @@
 package com.example.appgithubrepo.infrastructure.controller;
 
 import com.example.appgithubrepo.domain.ReposProvider;
-import com.example.appgithubrepo.domain.error.BadHeaderErrorException;
+import com.example.appgithubrepo.domain.error.HeaderErrorException;
 import com.example.appgithubrepo.infrastructure.controller.dto.ReposResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,9 +21,9 @@ public class Controller {
     @GetMapping
     public ResponseEntity<List<ReposResponseDto>> getAllRepos(@RequestParam String userName,
                                                               @RequestHeader String header) {
-        if (header.equals("application/xml")){
+        if (header.equals("application/xml")) {
             log.info("XML header request received - not supported");
-            throw new BadHeaderErrorException("XML header request received - not supported");
+            throw new HeaderErrorException("XML header request received - not supported");
         }
         List<ReposResponseDto> reposResponseDtos = reposProvider.getAllRepo(userName, header);
         log.info("List of repos successfully returned from reposProvider");

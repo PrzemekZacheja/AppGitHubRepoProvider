@@ -25,16 +25,16 @@ public class ReposProvider {
         List<RepoFromGithubDto> repoFromGithubDtos = gitHubConnector.takeReposFromGitHub(userName, header);
         List<Repo> repoListWithoutBranches = repoFromGithubDtos.stream().map(RepoMapper::mapFromRepoFromGitHubToRepo).toList();
         List<Repo> completeRepos = branchSshIncluder.includeBranchesSsh(repoListWithoutBranches);
-        List<ReposResponseDto> reposResponseDtoList = completeRepos.stream().map(RepoMapper::mapFromRepoToReposResponseDto).toList();
-        log.info("list of completeRepos successfully provide");
-        saveRepoList(reposResponseDtoList);
-        return reposResponseDtoList;
+        saveRepoList(completeRepos);
+        List<ReposResponseDto> completeReposResponseDtoList = completeRepos.stream().map(RepoMapper::mapFromRepoToReposResponseDto).toList();
+        log.info("list of complete repositories successfully provide with branches");
+        return completeReposResponseDtoList;
     }
 
-    private void saveRepoList(List<ReposResponseDto> repoList) {
+    private void saveRepoList(List<Repo> repoList) {
         if (!repoList.isEmpty()) {
             repoRepository.saveAll(repoList);
-            log.info("list of repos successfully saved to the database");
+            log.info("list of repos successfully saved to the ConcurrentHashMap");
         }
     }
 }

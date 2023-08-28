@@ -18,11 +18,11 @@ public class RepositoryErrorHandler {
         return new ErrorGetAllReposDto(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
-    @ExceptionHandler(BadHeaderErrorException.class)
+    @ExceptionHandler(HeaderErrorException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    public ErrorBadHeaderResponseDto handleBadHeaderErrorException(BadHeaderErrorException exception) {
-        return new ErrorBadHeaderResponseDto(HttpStatus.NOT_ACCEPTABLE, exception.getMessage());
+    public ErrorHeaderResponseDto handleBadHeaderErrorException(HeaderErrorException exception) {
+        return new ErrorHeaderResponseDto(HttpStatus.NOT_ACCEPTABLE, exception.getMessage());
     }
 
 }
