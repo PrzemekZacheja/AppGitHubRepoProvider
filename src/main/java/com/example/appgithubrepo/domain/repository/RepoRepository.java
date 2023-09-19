@@ -1,18 +1,10 @@
 package com.example.appgithubrepo.domain.repository;
 
-import com.example.appgithubrepo.domain.model.Repo;
-import org.springframework.stereotype.Repository;
+import com.example.appgithubrepo.domain.model.SimpleRepo;
+import org.springframework.data.repository.Repository;
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+public interface RepoRepository extends Repository<SimpleRepo, Long> {
 
-@Repository
-public class RepoRepository {
 
-    final Map<String, List<Repo>> repoMap = new ConcurrentHashMap<>();
-
-    public void saveAll(List<Repo> repoList) {
-        repoMap.put(repoList.get(0).user().login(), repoList);
-    }
+    void save(SimpleRepo simpleRepo);
 }
