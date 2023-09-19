@@ -2,6 +2,7 @@ package com.example.appgithubrepo.domain;
 
 import com.example.appgithubrepo.domain.clientgithub.dto.RepoFromGithubDto;
 import com.example.appgithubrepo.domain.model.Repo;
+import com.example.appgithubrepo.domain.model.SimpleRepo;
 import com.example.appgithubrepo.domain.repository.RepoRepository;
 import com.example.appgithubrepo.domain.service.BranchSshIncluder;
 import com.example.appgithubrepo.domain.service.GitHubConnector;
@@ -23,18 +24,23 @@ public class ReposProvider {
 
     public List<ReposResponseDto> getAllRepo(String userName, String header) {
         List<RepoFromGithubDto> repoFromGithubDtos = gitHubConnector.takeReposFromGitHub(userName, header);
-        List<Repo> repoListWithoutBranches = repoFromGithubDtos.stream().map(RepoMapper::mapFromRepoFromGitHubToRepo).toList();
+        List<Repo> repoListWithoutBranches = repoFromGithubDtos.stream()
+                                                               .map(RepoMapper::mapFromRepoFromGitHubToRepo)
+                                                               .toList();
         List<Repo> completeRepos = branchSshIncluder.includeBranchesSsh(repoListWithoutBranches);
-        saveRepoList(completeRepos);
-        List<ReposResponseDto> completeReposResponseDtoList = completeRepos.stream().map(RepoMapper::mapFromRepoToReposResponseDto).toList();
+        List<SimpleRepo> simpleRepos = RepoMapper.mapFromReposToSimpleRepos(completeRepos);
+        saveSimpleRepoList(simpleRepos);
+        List<ReposResponseDto> completeReposResponseDtoList = completeRepos.stream()
+                                                                           .map(RepoMapper::mapFromRepoToReposResponseDto)
+                                                                           .toList();
         log.info("list of complete repositories successfully provide with branches");
         return completeReposResponseDtoList;
     }
 
-    private void saveRepoList(List<Repo> repoList) {
+    private void saveSimpleRepoList(List<SimpleRepo> repoList) {
         if (!repoList.isEmpty()) {
-            repoRepository.saveAll(repoList);
-            log.info("list of repos successfully saved to the ConcurrentHashMap");
+            repoList.forEach(simpleRepo -> repoRepository.save(simpleRepo));
+            log.info("list of simple repositories successfully save in DB");
         }
     }
 }
