@@ -9,4 +9,6 @@ The return value is:
 - Owner Login
 - For each branch it’s name and last commit sha
 
+The result of the query is saved as a simple object containing the login and name of the repository. The database used is postgresql.
+
 The application uses SpringBoot, FeignClient, Log4J, Lombook.
