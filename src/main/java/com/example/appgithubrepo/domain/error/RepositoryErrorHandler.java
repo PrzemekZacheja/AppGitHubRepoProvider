@@ -15,7 +15,7 @@ public class RepositoryErrorHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorGetAllReposDto handleUserNameNotFoundException(FeignException.NotFound exception) {
-        return new ErrorGetAllReposDto(HttpStatus.NOT_FOUND, exception.getMessage());
+        return new ErrorGetAllReposDto(HttpStatus.NOT_FOUND.value(), exception.getMessage());
     }
 
     @ExceptionHandler(HeaderErrorException.class)

@@ -14,10 +14,11 @@
     <name>AppGitHubRepo</name>
     <description>AppGitHubRepo</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.2.0</springdoc-openapi-starter-webmvc-ui.version>
         <feign-jackson.version>8.18.0</feign-jackson.version>
         <spring-cloud.version>2022.0.4</spring-cloud.version>
+        <lombok.version>1.18.30</lombok.version>
     </properties>
     <dependencies>
         <dependency>
@@ -48,6 +49,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>

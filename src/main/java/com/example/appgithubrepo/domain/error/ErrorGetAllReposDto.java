@@ -1,6 +1,4 @@
 package com.example.appgithubrepo.domain.error;
 
-import org.springframework.http.HttpStatus;
-
-public record ErrorGetAllReposDto(HttpStatus httpStatus, String message) {
+public record ErrorGetAllReposDto(int httpStatus, String message) {
 }
